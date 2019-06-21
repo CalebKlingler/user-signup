@@ -5,23 +5,26 @@
 
 <form method='POST' action='/welcome'>
     <label for='username'>Username</label>
-    <input type='text' id='username' name='username' />
+    <input type='text' value='{{username}}' id='username' name='username' />
+    {% if usererror %}
+    <span class='error'>That's not a valid username.</span>
+    {% endif %}
 
     <br>
 
     <label for='password'>Password </label>
-    <input type='password' id='password' name='password' />
-
+    <input type='password' value='{{password}}' id='password' name='password' />
+    <span class='error'>{{passworderror}}</span>
     <br>
 
     <label for ='ver-password'>Verify Password</label>
-    <input type='password' id='ver-password' name='ver-password' />
-
+    <input type='password' value='{{verpassword}}' id='ver-password' name='ver-password' />
+    <span class='error'>{{verpassworderror}}</span>
     <br>
 
     <label for ='email'>Email (optional)</label>
-    <input type='text' id='email' name='email' />
-
+    <input type='text' value='{{email}}' id='email' name='email'  />
+    <span class='error'>{{emailerror}}</span>
     <br>
     <input type='submit' />
 
