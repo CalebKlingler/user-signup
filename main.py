@@ -8,10 +8,8 @@ app.config['DEBUG'] = True
 @app.route('/')
 def index():
     username=''
-    password=''
-    verpassword=''
     email=''
-    return render_template('index.html', title='Signup', username=username, password=password, verpassword=verpassword, email=email)
+    return render_template('index.html', title='Signup', username=username, email=email)
 
 
 @app.route('/welcome', methods=['POST'])
@@ -20,14 +18,60 @@ def welcome():
     password=request.form['password']
     verpassword=request.form['ver-password']
     email=request.form['email']
-    if username=='' or len(username)<3 or len(username) > 20:
-        return render_template('index.html', usererror='y', username=username)
+    user_error=''
+    pass_error=''
+    verpass_error=''
+    email_error=''
+    def is_valid(word):
+        if word=='' or len(word) < 3 or len(word) > 20:
+            return False
+        else:
+            for char in word:
+                if char==' ':
+                    return False
+            return True
+    def are_matching(password,verpassword):
+        if verpassword == '':
+            return False
+        if password == verpassword:
+            return True
+        else:
+            return False
+
+    def is_valid_email(email):
+        if email == '':
+            return True
+        if len(email) < 3 or len(email) > 20:
+            return False
+        at = 0
+        periods = 0
+        for char in email:
+            if char == '@':
+                at += 1
+            if char == '.':
+                periods += 1
+        if at ==1 and periods ==1:
+            return True
+        else:
+            return False
+        
+    
+    if not is_valid(username):
+        user_error = 'y'
+    
+    if not is_valid(password):
+        pass_error = 'y'
+    
+    if not are_matching(password,verpassword):
+        verpass_error = 'y'
+    
+    if not is_valid_email(email):
+        email_error = 'y'
+    
+    if not is_valid(username) or not is_valid(password) or not are_matching(password, verpassword) or not is_valid_email(email):
+        return render_template('index.html',emailerror=email_error, verpassworderror=verpass_error, passerror=pass_error,  usererror=user_error, username=username, email=email)
+    
     else:
-        for char in username:
-            if char==' ':
-                return render_template('index.html', usererror='y', username=username, email=email)
-        return render_template('welcome.html', title='Welcome',username=username)
-    if password=='' or len(password)<3 or len(password)>20:
-        return render_template('index.html', passerror='y', username=username, email=email)
+        return render_template('welcome.html', title='Welcome', username=username)
 
 app.run()
