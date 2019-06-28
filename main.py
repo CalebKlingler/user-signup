@@ -22,6 +22,7 @@ def welcome():
     pass_error=''
     verpass_error=''
     email_error=''
+    verpass_valid=''
     def is_valid(word):
         if word=='' or len(word) < 3 or len(word) > 20:
             return False
@@ -64,12 +65,16 @@ def welcome():
     
     if not are_matching(password,verpassword):
         verpass_error = 'y'
+
+    if not is_valid(verpassword):
+        verpass_valid = 'y'
+        verpass_error = ''
     
     if not is_valid_email(email):
         email_error = 'y'
     
-    if not is_valid(username) or not is_valid(password) or not are_matching(password, verpassword) or not is_valid_email(email):
-        return render_template('index.html',emailerror=email_error, verpassworderror=verpass_error, passerror=pass_error,  usererror=user_error, username=username, email=email)
+    if not is_valid(username) or not is_valid(password) or not is_valid(verpassword) or not are_matching(password, verpassword) or not is_valid_email(email):
+        return render_template('index.html', verpassvalid = verpass_valid, emailerror=email_error, verpassworderror=verpass_error, passerror=pass_error,  usererror=user_error, username=username, email=email)
     
     else:
         return render_template('welcome.html', title='Welcome', username=username)

@@ -24,6 +24,9 @@
     {% if verpassworderror %}
     <span class='error'>Passwords don't match</span>
     {% endif %}
+    {% if verpassvalid %}
+    <span class='error'>That's not a valid password</span>
+    {% endif %}
     <br>
 
     <label for ='email'>Email (optional)</label>
